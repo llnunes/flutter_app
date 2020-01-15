@@ -1,30 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/drawer_list.dart';
 import 'package:flutter_app/pages/hello_listview.dart';
 import 'package:flutter_app/pages/hello_page2.dart';
 import 'package:flutter_app/pages/hello_page3.dart';
 import 'package:flutter_app/util/nav.dart';
 import 'package:flutter_app/widgets/blue_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Hello Flutter S",
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Hello Flutter S",
+          ),
+          centerTitle: true,
+          bottom: TabBar(tabs: <Widget>[
+            Tab(text: "Tab 1"),
+            Tab(text: "Tab 2"),
+          ],),
         ),
-        centerTitle: true,
+        body: TabBarView(
+          children: <Widget>[
+            _body(context),
+            Container(
+              color: Colors.yellow,
+            )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            print("T");
+          },
+        ),
+        drawer: DrawerList(),
       ),
-      body: _body(context),
     );
   }
 
   _body(context) {
     return Container(
+      padding: EdgeInsets.only(top: 16),
       color: Colors.white,
 //      child: SizedBox.expand(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           _text(),
           _pageView(),
@@ -94,7 +118,7 @@ class HomeApp extends StatelessWidget {
 
   _onClickDialog(BuildContext context) {
     showDialog(
-      barrierDismissible: false,
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return WillPopScope(
@@ -119,7 +143,16 @@ class HomeApp extends StatelessWidget {
         });
   }
 
-  _onClickToast() {}
+  _onClickToast() {
+    Fluttertoast.showToast(
+        msg: "This is Center Short Toast",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 5,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
 
   _text() {
     return Text("PetShop DogShow",
